@@ -1,0 +1,17 @@
+extends base
+block emailContent
+    p Hi #{userName}, 
+
+    table 
+        tr
+            th Product
+            th Price 
+            th Quantity
+        each product in products 
+            tr
+                td #{product.title}
+                td $#{product.price}
+                td #{product.quantity}
+    p Pagaste $#{totalPrice} 
+
+             
