@@ -1,4 +1,8 @@
 const express = require("express");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 const path = require("path");
 //Utils
 const { AppError } = require("./utils/AppError");
@@ -20,6 +24,25 @@ app.use(express.json());
 //Set template engine
 // app.set("view engine", "pug");
 // app.set("views", path.join(__dirname, "views"));
+
+// Limit the number of requests that can be accepted to our server
+const limiter = rateLimit({
+  max: 10000,
+  windowMs: 60 * 60 * 1000, // 1 hr
+  message: "Number of requests have been exceeded",
+});
+
+app.use(limiter);
+
+// Add security headers
+app.use(helmet());
+
+// Compress responses
+app.use(compression());
+
+// Log incoming requests
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+else app.use(morgan("combined"));
 
 //Define Endpoints
 app.use("/", viewsRouter);
