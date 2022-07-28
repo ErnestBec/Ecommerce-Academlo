@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+
 dotenv.config({ path: "./config.env" });
 
 //Utils
 const { AppError } = require("../utils/AppError");
 const { catchAsync } = require("../utils/catchAsync");
 //Models
-const { Users } = require("../Models/users.model");
+const { Users } = require("../models/users.model");
 
 const protectSession = catchAsync(async (req, res, next) => {
   let token;
